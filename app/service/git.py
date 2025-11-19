@@ -3,7 +3,7 @@ import requests
 import xml.etree.ElementTree as ET
 
 OWNER = "purplemashu"
-REPO  = "me-cli"
+REPO  = "me-cli-sunset"
 BRANCH = "main"
 
 def get_local_commit():
