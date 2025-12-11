@@ -56,17 +56,20 @@ def send_api_request(
 
     url = f"{BASE_API_URL}/{path}"
     resp = requests.post(url, headers=headers, data=json.dumps(body), timeout=30)
-    
-    # print(f"Headers: {json.dumps(headers, indent=2)}")
-    # print(f"Response body: {resp.text}")
 
-    try:
-        decrypted_body = decrypt_xdata(api_key, json.loads(resp.text))
-        # print(f"Decrypted body: {json.dumps(decrypted_body, indent=2)}")
-        return decrypted_body
-    except Exception as e:
-        print("[decrypt err]", e)
-        return resp.text
+try:
+    decrypted_body = decrypt_xdata(api_key, json.loads(resp.text))
+
+    # === Untuk melihat decrypted raw =========
+    print("\n=== DECRYPTED RAW DATA ===")
+    print(json.dumps(decrypted_body, indent=2))
+    print("=== END DECRYPTED ===\n")
+    # ===============================================
+
+    return decrypted_body
+except Exception as e:
+    print("[decrypt err]", e)
+    return resp.text
 
 def get_profile(api_key: str, access_token: str, id_token: str) -> dict:
     path = "api/v8/profile"
