@@ -38,11 +38,9 @@ from app.menus.store.search import show_family_list_menu, show_store_packages_me
 from app.menus.store.redemables import show_redeemables_menu
 
 # ================= Konfigurasi =================
-# Tentukan lebar tampilan sesuai terminal, maksimal 80
 columns, _ = shutil.get_terminal_size(fallback=(80, 20))
 WIDTH = min(columns, 80)
 
-# Menu options (Bahasa Indonesia)
 MENU_OPTIONS = [
     ("1", "Login / Ganti Akun"),
     ("2", "Lihat Paket Saya"),
@@ -99,13 +97,13 @@ def main():
 
         if pengguna_aktif:
             # Ambil info balance & tiering
-            balance_info = get_balance(pengguna_aktif)
-            saldo_tersisa = balance_info.get("balance")
+            balance_info = get_balance(AuthInstance.api_key, pengguna_aktif["tokens"]["id_token"])
+            saldo_tersisa = balance_info.get("remaining")
             expired_at = balance_info.get("expired_at")
             
             point_info = "Points: N/A | Tier: N/A"
             if pengguna_aktif["subscription_type"] == "PREPAID":
-                tiering_data = get_tiering_info(pengguna_aktif)
+                tiering_data = get_tiering_info(AuthInstance.api_key, pengguna_aktif["tokens"])
                 tier = tiering_data.get("tier", 0)
                 current_point = tiering_data.get("current_point", 0)
                 point_info = f"Points: {current_point} | Tier: {tier}"
@@ -119,7 +117,6 @@ def main():
                 "point_info": point_info
             }
 
-            # Tampilkan menu
             tampilkan_menu(profile)
             pilihan = input("Pilih menu: ").strip()
 
@@ -142,7 +139,7 @@ def main():
             elif pilihan == "5":
                 kode_opsi = input("Masukkan kode opsi (atau '99' untuk batal): ")
                 if kode_opsi != "99":
-                    show_package_details(kode_opsi)
+                    show_package_details(AuthInstance.api_key, pengguna_aktif["tokens"], kode_opsi, False)
             elif pilihan == "6":
                 kode_family = input("Masukkan kode family (atau '99' untuk batal): ")
                 if kode_family != "99":
@@ -154,13 +151,13 @@ def main():
                     pakai_decoy = tanya_ya_tidak("Gunakan paket decoy?")
                     pause_setelah_berhasil = tanya_ya_tidak("Pause setelah setiap pembelian sukses?")
                     delay_detik = tanya_angka("Delay antar pembelian (detik, 0 jika tanpa delay)", 0)
-                    purchase_by_family(kode_family, pakai_decoy, pause_setelah_berhasil, delay_detik, start_option)
+                    purchase_by_family(AuthInstance.api_key, pengguna_aktif["tokens"], kode_family, pakai_decoy, pause_setelah_berhasil, delay_detik, start_option)
             elif pilihan == "8":
-                show_transaction_history()
+                show_transaction_history(AuthInstance.api_key, pengguna_aktif["tokens"])
             elif pilihan == "9":
-                show_family_info()
+                show_family_info(AuthInstance.api_key, pengguna_aktif["tokens"])
             elif pilihan == "10":
-                show_circle_info()
+                show_circle_info(AuthInstance.api_key, pengguna_aktif["tokens"])
             elif pilihan == "11":
                 is_enterprise = tanya_ya_tidak("Apakah store enterprise?")
                 show_store_segments_menu(is_enterprise)
@@ -179,12 +176,12 @@ def main():
                 msisdn = input("Masukkan MSISDN (628xxxx): ")
                 nik = input("Masukkan NIK: ")
                 kk = input("Masukkan KK: ")
-                res = dukcapil(msisdn, kk, nik)
+                res = dukcapil(AuthInstance.api_key, msisdn, kk, nik)
                 print(json.dumps(res, indent=2))
                 pause()
             elif pilihan.lower() == "v":
                 msisdn = input("Masukkan MSISDN yang ingin divalidasi (628xxxx): ")
-                res = validate_msisdn(msisdn)
+                res = validate_msisdn(AuthInstance.api_key, pengguna_aktif["tokens"], msisdn)
                 print(json.dumps(res, indent=2))
                 pause()
             elif pilihan.lower() == "n":
