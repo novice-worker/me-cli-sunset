@@ -48,7 +48,7 @@ MENU_OPTIONS = [
     ("4", "Beli Paket 🔥 HOT-2 🔥"),
     ("5", "Beli Paket Berdasarkan Kode Opsi"),
     ("6", "Beli Paket Berdasarkan Kode Family"),
-    ("7", "Beli Semua Paket di Family Code (loop)"),
+    ("7", "Beli Semua Paket di Kode Family (loop)"),
     ("8", "Riwayat Transaksi"),
     ("9", "Family Plan / Akrab Organizer"),
     ("10", "Circle"),
