@@ -30,7 +30,6 @@ def show_notification_menu():
         for idx, notification in enumerate(notifications):
             is_read = notification.get("is_read", False)
             full_message = notification.get("full_message", "")
-            brief_message = notification.get("brief_message", "")
             time = notification.get("timestamp", "")
             
             status = ""
