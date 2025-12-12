@@ -39,8 +39,8 @@ def show_notification_menu():
                 status = "UNREAD"
                 unread_count += 1
 
-            print(f"{idx + 1}. [{status}] {full_message}")
-            print(f"- Time: {time}")
+            print(f"{idx + 1}. [{status}] {time}")
+            print(f"- {full_message}")
             print("-" * WIDTH)
         print(f"Total notifications: {len(notifications)} | Unread: {unread_count}")
         print("=" * WIDTH)
