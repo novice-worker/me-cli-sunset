@@ -51,7 +51,7 @@ def send_api_request(
         "x-signature": x_sig,
         "x-request-id": str(uuid.uuid4()),
         "x-request-at": java_like_timestamp(now),
-        "x-version-app": "8.9.0",
+        "x-version-app": "8.9.1",
     }
 
     url = f"{BASE_API_URL}/{path}"
@@ -76,9 +76,9 @@ def get_profile(api_key: str, access_token: str, id_token: str) -> dict:
 
     raw_payload = {
         "access_token": access_token,
-        "app_version": "8.9.0",
+        "app_version": "8.9.1",
         "is_enterprise": False,
-        "lang": "en"
+        "lang": "id"
     }
 
     print("Fetching profile...")
@@ -91,7 +91,7 @@ def get_balance(api_key: str, id_token: str) -> dict:
     
     raw_payload = {
         "is_enterprise": False,
-        "lang": "en"
+        "lang": "id"
     }
     
     print("Fetching balance...")
@@ -157,7 +157,7 @@ def get_family(
                 "is_pdlp": True,
                 "referral_code": "",
                 "is_migration": False,
-                "lang": "en"
+                "lang": "id"
             }
         
             res = send_api_request(api_key, path, payload_dict, id_token, "POST")
@@ -187,7 +187,7 @@ def get_families(api_key: str, tokens: dict, package_category_code: str) -> dict
         "package_category_code": package_category_code,
         "with_icon_url": True,
         "is_migration": False,
-        "lang": "en"
+        "lang": "id"
     }
     
     res = send_api_request(api_key, path, payload_dict, tokens["id_token"], "POST")
@@ -216,7 +216,7 @@ def get_package(
         "is_enterprise": False,
         "is_shareable": False,
         "is_migration": False,
-        "lang": "en",
+        "lang": "id",
         "package_option_code": package_option_code,
         "is_upsell_pdp": False,
         "package_variant_code": package_variant_code
@@ -260,7 +260,7 @@ def intercept_page(
     
     raw_payload = {
         "is_enterprise": is_enterprise,
-        "lang": "en",
+        "lang": "id",
         "package_option_code": option_code
     }
     
@@ -282,7 +282,7 @@ def login_info(
     raw_payload = {
         "access_token": tokens["access_token"],
         "is_enterprise": is_enterprise,
-        "lang": "en"
+        "lang": "id"
     }
 
     res = send_api_request(api_key, path, raw_payload, tokens["id_token"], "POST")
@@ -305,7 +305,7 @@ def get_package_details(
 ) -> dict | None:
     family_data = get_family(api_key, tokens, family_code, is_enterprise, migration_type)
     if not family_data:
-        print(f"Gagal mengambil data family untuk {family_code}.")
+        print(f"Gagal mengambil family code untuk {family_code}.")
         return None
     
     package_options = []
@@ -341,7 +341,7 @@ def get_notifications(
     
     raw_payload = {
         "is_enterprise": False,
-        "lang": "en"
+        "lang": "id"
     }
     
     res = send_api_request(api_key, path, raw_payload, tokens["id_token"], "POST")
@@ -361,7 +361,7 @@ def get_notification_detail(
     
     raw_payload = {
         "is_enterprise": False,
-        "lang": "en",
+        "lang": "id",
         "notification_id": notification_id
     }
     
@@ -379,7 +379,7 @@ def get_pending_transaction(api_key: str, tokens: dict) -> dict:
 
     raw_payload = {
         "is_enterprise": False,
-        "lang": "en"
+        "lang": "id"
     }
 
     print("Fetching pending transactions...")
@@ -416,7 +416,7 @@ def get_transaction_history(api_key: str, tokens: dict) -> dict:
 
     raw_payload = {
         "is_enterprise": False,
-        "lang": "en"
+        "lang": "id"
     }
 
     print("Fetching transaction history...")
@@ -456,7 +456,7 @@ def get_tiering_info(api_key: str, tokens: dict) -> dict:
 
     raw_payload = {
         "is_enterprise": False,
-        "lang": "en"
+        "lang": "id"
     }
 
     print("Fetching tiering info...")
@@ -481,7 +481,7 @@ def unsubscribe(
         "product_domain": product_domain,
         "is_enterprise": False,
         "unsubscribe_reason_code": "",
-        "lang": "en",
+        "lang": "id",
         "family_member_id": ""
     }
     
