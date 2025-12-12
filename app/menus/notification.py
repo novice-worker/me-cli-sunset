@@ -23,25 +23,42 @@ def show_notification_menu():
             print("No notifications available.")
             return
         
-        print("=" * WIDTH)
-        print("Notifications:")
-        print("=" * WIDTH)
-        unread_count = 0
-        for idx, notification in enumerate(notifications):
-            is_read = notification.get("is_read", False)
-            full_message = notification.get("full_message", "")
-            time = notification.get("timestamp", "")
-            
-            status = ""
-            if is_read:
-                status = "READ"
-            else:
-                status = "UNREAD"
-                unread_count += 1
+from datetime import datetime
 
-            print(f"{idx + 1}. [{status}] {time}")
-            print(f"- {full_message}")
-            print("-" * WIDTH)
+# Mapping bulan ke bahasa Indonesia
+bulan_id = {
+    1: "Januari", 2: "Februari", 3: "Maret", 4: "April",
+    5: "Mei", 6: "Juni", 7: "Juli", 8: "Agustus",
+    9: "September", 10: "Oktober", 11: "November", 12: "Desember"
+}
+
+print("=" * WIDTH)
+print("Notifications:")
+print("=" * WIDTH)
+unread_count = 0
+
+for idx, notification in enumerate(notifications):
+    is_read = notification.get("is_read", False)
+    full_message = notification.get("full_message", "")
+    raw_time = notification.get("timestamp", "")
+
+    # Parse ISO 8601 jadi datetime object
+    try:
+        dt = datetime.fromisoformat(raw_time.replace("Z", "+00:00"))
+        formatted_time = f"{dt.day} {bulan_id[dt.month]} {dt.year} {dt.hour:02d}.{dt.minute:02d}"
+    except ValueError:
+        formatted_time = raw_time  # fallback jika parsing gagal
+
+    status = "READ" if is_read else "UNREAD"
+    if not is_read:
+        unread_count += 1
+
+    print(f"{idx + 1}. [{status}] {formatted_time}")
+    print(f"- {full_message}")
+    print("-" * WIDTH)
+
+print(f"Total notifications: {len(notifications)} | Unread: {unread_count}")
+print("=" * WIDTH))
         print(f"Total notifications: {len(notifications)} | Unread: {unread_count}")
         print("=" * WIDTH)
         print("1. Read All Unread Notifications")
